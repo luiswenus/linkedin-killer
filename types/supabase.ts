@@ -44,21 +44,21 @@ export type Database = {
       }
       profiles: {
         Row: {
-          about_me: string
+          about_me: string | null
           created_at: string
           embedding: string | null
           id: string
           name: string
         }
         Insert: {
-          about_me?: string
+          about_me?: string | null
           created_at?: string
           embedding?: string | null
           id?: string
           name: string
         }
         Update: {
-          about_me?: string
+          about_me?: string | null
           created_at?: string
           embedding?: string | null
           id?: string
