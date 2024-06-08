@@ -1,19 +1,22 @@
-import { updateEmbedding } from '@/utils/openai/service';
 import { createClient } from '@/utils/supabase/server';
 import { NextResponse } from 'next/server';
 
 export async function POST(request: Request) {
-  const url = new URL(request.url);
-  const queryParams = Object.fromEntries(url.searchParams);
+  const { email, note } = await request.json();
+
   const supabase = createClient();
   
   try {
-    const embedding = await updateEmbedding(queryParams.name);
-    const { error } = await supabase.from("profiles").insert(
+    const { data: { user } } = await supabase.auth.getUser();
+    
+    if (!user?.email) {
+      return NextResponse.json({ error: "User not found" }, { status: 401 });
+    }
+    const { error } = await supabase.from("profile_connections").insert(
       {
-        name: queryParams.name,
-        note: queryParams.about_me,
-        embedding: embedding,
+        profile_email: user.email,
+        other_profile_email: email,
+        note: note,
       }
     );
     return NextResponse.json({ message: "user added successfully" }, { status: 200 });
