@@ -11,70 +11,58 @@ export type Database = {
     Tables: {
       profile_connections: {
         Row: {
-          other_profile_id: string
-          profile_id: string
+          note: string
+          other_profile_name: string
+          profile_name: string
         }
         Insert: {
-          other_profile_id: string
-          profile_id: string
+          note: string
+          other_profile_name: string
+          profile_name: string
         }
         Update: {
-          other_profile_id?: string
-          profile_id?: string
+          note?: string
+          other_profile_name?: string
+          profile_name?: string
         }
         Relationships: [
           {
-            foreignKeyName: "profile_connections_other_profile_id_fkey"
-            columns: ["other_profile_id"]
+            foreignKeyName: "profile_connections_other_profile_name_fkey"
+            columns: ["other_profile_name"]
             isOneToOne: false
             referencedRelation: "profiles"
-            referencedColumns: ["id"]
+            referencedColumns: ["name"]
           },
           {
-            foreignKeyName: "profile_connections_profile_id_fkey"
-            columns: ["profile_id"]
+            foreignKeyName: "profile_connections_profile_name_fkey"
+            columns: ["profile_name"]
             isOneToOne: false
             referencedRelation: "profiles"
-            referencedColumns: ["id"]
+            referencedColumns: ["name"]
           },
         ]
       }
       profiles: {
         Row: {
+          about_me: string | null
           created_at: string
           embedding: string | null
           id: string
           name: string
-          note: string
         }
         Insert: {
+          about_me?: string | null
           created_at?: string
           embedding?: string | null
           id?: string
           name: string
-          note?: string
         }
         Update: {
+          about_me?: string | null
           created_at?: string
           embedding?: string | null
           id?: string
           name?: string
-          note?: string
-        }
-        Relationships: []
-      }
-      test: {
-        Row: {
-          created_at: string
-          id: number
-        }
-        Insert: {
-          created_at?: string
-          id?: number
-        }
-        Update: {
-          created_at?: string
-          id?: number
         }
         Relationships: []
       }
