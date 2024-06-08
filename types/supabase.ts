@@ -49,7 +49,7 @@ export type Database = {
           email: string
           embedding: string | null
           name: string
-          user_id: string
+          user_id: string | null
         }
         Insert: {
           about_me?: string | null
@@ -57,7 +57,7 @@ export type Database = {
           email: string
           embedding?: string | null
           name: string
-          user_id: string
+          user_id?: string | null
         }
         Update: {
           about_me?: string | null
@@ -65,7 +65,7 @@ export type Database = {
           email?: string
           embedding?: string | null
           name?: string
-          user_id?: string
+          user_id?: string | null
         }
         Relationships: [
           {
