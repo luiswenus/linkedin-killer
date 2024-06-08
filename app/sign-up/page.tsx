@@ -1,4 +1,5 @@
 import { SubmitButton } from "@/components/submit-button";
+import { computeEmbedding } from "@/utils/openai/service";
 import { createClient } from "@/utils/supabase/server";
 import { headers } from "next/headers";
 import { redirect } from "next/navigation";
@@ -31,12 +32,21 @@ export default function Login({
       return redirect("/login?message=Could not authenticate user");
     }
 
-    await supabase.from("profiles").upsert({
+    const { data: profileConnections } = await supabase
+      .from("profile_connections")
+      .select()
+      .eq("other_profile_email", email);
+
+    const profile = {
       email,
       name,
       user_id: data?.user?.id,
       about_me: aboutMe,
-    });
+    };
+
+    const embedding = await computeEmbedding(profile, profileConnections ?? []);
+
+    await supabase.from("profiles").upsert({ ...profile, embedding });
 
     return redirect("/dashboard");
   };
