@@ -39,7 +39,7 @@ export default function OtherConnections() {
             key={email}
             className="border border-gray-300 rounded-xl shadow p-4"
           >
-            <h3 className="font-bold text-2xl mb-3">
+            <h3 className="font-bold text-2xl mb-3 overflow-hidden text-ellipsis whitespace-nowrap">
               <a href={`/dashboard/profile/${email}`} className="underline">
                 {email}
               </a>
