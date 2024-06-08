@@ -1,22 +1,5 @@
 import { ProfileConnection } from "@/types/models";
-import { createClient } from "../supabase/server";
 import { openai } from "./client";
-
-export const updateEmbedding = async (email: string) => {
-  const supabase = createClient();
-  const { data: profiles } = await supabase
-    .from("profiles")
-    .select()
-    .eq("email", email);
-  const { data: profile_connections } = await supabase
-    .from("profile_connections")
-    .select()
-    .eq("other_profile_email", email);
-  if (profiles && profiles.length == 1 && profile_connections != null) {
-    const embedding = await computeEmbedding(profiles[0], profile_connections);
-    return embedding;
-  }
-};
 
 export const computeEmbedding = async (
   profile: { name?: string; about_me: string },
