@@ -9,7 +9,7 @@ export async function POST(request: Request) {
     const searchQuery = requestBody.search_query;
     const queryEmbedding = await openai.embeddings.create({
       input: searchQuery,
-      model: "text-embedding-3-small",
+      model: "text-embedding-ada-002",
     });
 
     const { data, error } = await supabase.rpc("search_profiles", {
