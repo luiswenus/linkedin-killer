@@ -2,7 +2,7 @@
 import { useState, useEffect } from 'react';
 
 interface Profile {
-  other_profile_name: string;
+  other_profile_email: string;
   note: string;
 }
 interface OwnConnectionsProps {
@@ -38,7 +38,7 @@ export default function OwnConnections({ fetchConnections, profiles }: OwnConnec
             className="w-1/5 rounded-2xl"
           />
           <div className="w-4/5 pl-4">
-            <h3 className="font-bold text-2xl mb-3">{profile.other_profile_name}</h3>
+            <h3 className="font-bold text-2xl mb-3">{profile.other_profile_email}</h3>
             <p className="text-gray-600">{profile.note}</p>
           </div>
         </div>
