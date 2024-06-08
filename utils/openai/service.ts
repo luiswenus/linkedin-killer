@@ -25,5 +25,5 @@ ${connection.note}
     model: "text-embedding-3-small",
   });
 
-  return input;
+  return result;
 };
