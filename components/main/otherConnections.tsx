@@ -1,4 +1,25 @@
+import { useState, useEffect } from "react";
+
+interface Connection {
+  notes: string[];
+  about_me: string;
+  summary?: string;
+}
+
 export default function OtherConnections() {
+  const [connections, setConnections] = useState<{ [key: string]: Connection }>(
+    {}
+  );
+
+  useEffect(() => {
+    const fetchConnections = async () => {
+      const response = await fetch("/api/getSecondDegreeProfiles");
+      const data = await response.json();
+      setConnections(data.groupedData);
+    };
+
+    fetchConnections();
+  }, []);
 
   return (
     <>
@@ -12,44 +33,27 @@ export default function OtherConnections() {
         <button className="bg-gray-700 text-white p-2">Search</button>
       </div>
       <div className="grid grid-cols-3 gap-4">
-        <div className="border border-gray-300 rounded-xl shadow p-4">
-          <h3 className="font-bold text-2xl mb-3">Connection 1</h3>
-          <p className="text-gray-600">
-            This is a brief description of Connection 1. It provides some
-            details about the connection.
-          </p>
-          <br></br>
-          <span className="text-gray-600">Connection: </span>
-          <a href="/connections/1" className="underline">
-            Name
-          </a>
-        </div>
-        <div className="border border-gray-300 rounded-xl shadow p-4">
-          <h3 className="font-bold text-2xl mb-3">Connection 2</h3>
-          <p className="text-gray-600">
-            This is a brief description of Connection 2. It provides some
-            details about the connection.
-          </p>
-          <br></br>
-          <span className="text-gray-600">Connection: </span>
-          <a href="/connections/1" className="underline">
-            Name
-          </a>
-        </div>
-        <div className="border border-gray-300 rounded-xl shadow p-4">
-          <h3 className="font-bold text-2xl mb-3">Connection 3</h3>
-          <p className="text-gray-600">
-            This is a brief description of Connection 3. It provides some
-            details about the connection.
-          </p>
-          <br></br>
-          <span className="text-gray-600">Connection: </span>
-          <a href="/connections/1" className="underline">
-            Name
-          </a>
-        </div>
+        {Object.keys(connections).map((email) => (
+          <div
+            key={email}
+            className="border border-gray-300 rounded-xl shadow p-4"
+          >
+            <h3 className="font-bold text-2xl mb-3">
+              <a href={`/dashboard/profile/${email}`} className="underline">
+                {email}
+              </a>
+            </h3>
+            <p className="text-gray-600">
+              {connections[email].summary || "No description available."}
+            </p>
+            <br></br>
+            <span className="text-gray-600">Connection: </span>
+            <a href={`/connections/${email}`} className="underline">
+              {email}
+            </a>
+          </div>
+        ))}
       </div>
     </>
   );
 }
-
