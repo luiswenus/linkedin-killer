@@ -52,7 +52,7 @@ export default async function ProtectedPage() {
             </button>
           </form>
 
-          <h2 className="font-bold text-4xl mb-4 mt-8">Own connections</h2>
+          <h2 className="font-bold text-4xl mb-4 mt-32">Own connections</h2>
           <div className="flex flex-col border border-gray-300 rounded-xl shadow overflow-hidden">
             <input
               type="text"
@@ -95,7 +95,7 @@ export default async function ProtectedPage() {
               </p>
             </div>
           </div>
-          <h2 className="font-bold text-4xl mb-4 mt-8">Other connections</h2>
+          <h2 className="font-bold text-4xl mb-4 mt-32">Other connections</h2>
           <div className="flex flex-col border border-gray-300 rounded-xl shadow overflow-hidden">
             <input
               type="text"
