@@ -2,8 +2,8 @@
 import { useState, useEffect } from 'react';
 
 interface Profile {
-  name: string;
-  about_me: string;
+  other_profile_name: string;
+  note: string;
 }
 interface OwnConnectionsProps {
   fetchConnections: () => void;
@@ -23,7 +23,7 @@ export default function OwnConnections({ fetchConnections, profiles }: OwnConnec
       <div className="flex flex-col border border-gray-300 rounded-xl shadow overflow-hidden">
         <input
           type="text"
-          className="p-2 flex-grow"
+          className="p-2 flex-grow outline-none"
           placeholder="Search connections..."
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
@@ -38,8 +38,8 @@ export default function OwnConnections({ fetchConnections, profiles }: OwnConnec
             className="w-1/5 rounded-2xl"
           />
           <div className="w-4/5 pl-4">
-            <h3 className="font-bold text-2xl mb-3">{profile.name}</h3>
-            <p className="text-gray-600">{profile.about_me}</p>
+            <h3 className="font-bold text-2xl mb-3">{profile.other_profile_name}</h3>
+            <p className="text-gray-600">{profile.note}</p>
           </div>
         </div>
       ))}

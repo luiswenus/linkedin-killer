@@ -6,7 +6,7 @@ export default function OtherConnections() {
       <div className="flex flex-col border border-gray-300 rounded-xl shadow overflow-hidden">
         <input
           type="text"
-          className="p-2 flex-grow"
+          className="p-2 flex-grow outline-none"
           placeholder="Try searching something like: 'Someone who is an AI researcher'"
         />
         <button className="bg-gray-700 text-white p-2">Search</button>

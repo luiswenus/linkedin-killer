@@ -10,7 +10,7 @@ export default function Connections() {
 
   const fetchConnections = async () => {
     try {
-      const response = await fetch(`/api/getProfile`);
+      const response = await fetch(`/api/getProfileConnection`);
       const data = await response.json();
       setProfiles(data.profiles || []);
     } catch (error) {

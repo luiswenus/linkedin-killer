@@ -14,12 +14,12 @@ export default function AddPerson({ fetchConnections }: AddPersonProps){
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
 
-    const response = await fetch('/api/createProfile', {
+    const response = await fetch('/api/createProfileConnection', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({ name, about_me: about }),
+      body: JSON.stringify({ name, note: about }),
     });
 
     if (response.ok) {
@@ -45,7 +45,7 @@ export default function AddPerson({ fetchConnections }: AddPersonProps){
           type="text"
           id="name"
           name="name"
-          className="p-2 border shadow border-gray-300 rounded-md"
+          className="p-2 border shadow border-gray-300 rounded-md outline-none"
           placeholder="Name of person"
           value={name}
           onChange={(e) => setName(e.target.value)}
@@ -57,7 +57,7 @@ export default function AddPerson({ fetchConnections }: AddPersonProps){
         <textarea
           id="about"
           name="about"
-          className="p-2 border shadow border-gray-300 rounded-md h-32"
+          className="p-2 border shadow border-gray-300 rounded-md h-32 outline-none"
           placeholder="Give a natural language description of the person"
           value={about}
           onChange={(e) => setAbout(e.target.value)}

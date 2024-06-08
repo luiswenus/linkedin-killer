@@ -2,15 +2,16 @@ import { createClient } from '@/utils/supabase/server';
 import { NextResponse } from 'next/server';
 
 export async function POST(request: Request) {
-  const { name, about_me } = await request.json();
+  const { name, note } = await request.json();
 
   const supabase = createClient();
   
   try {
-    const { error } = await supabase.from("profiles").insert(
+    const { error } = await supabase.from("profile_connections").insert(
       {
-        name: name,
-        about_me: about_me,
+        profile_name: "Luis Wenus",
+        other_profile_name: name,
+        notes: note,
       }
     );
     return NextResponse.json({ message: "user added successfully" }, { status: 200 });
