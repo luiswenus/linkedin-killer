@@ -11,11 +11,10 @@ interface OwnConnectionsProps {
 }
 
 export default function ActualOwnConnections({ fetchConnections, profiles }: OwnConnectionsProps) {
-  const [searchTerm, setSearchTerm] = useState('');
 
   useEffect(() => {
     fetchConnections();
-  }, [searchTerm]);
+  }, []);
 
   return (
     <>
