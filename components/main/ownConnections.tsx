@@ -2,9 +2,19 @@
 import { Profile } from "@/types/models";
 import { useState } from "react";
 
+interface EnrichedProfile {
+  notes: any[];
+  about_me: string | null;
+  created_at: string;
+  email: string;
+  name: string | null;
+  user_id: string | null;
+  summary?: string; // Add the summary property
+}
+
 export default function OwnConnections() {
   const [searchTerm, setSearchTerm] = useState("");
-  const [profiles, setProfiles] = useState<Profile[]>();
+  const [profiles, setProfiles] = useState<EnrichedProfile[]>();
   const [isLoading, setIsLoading] = useState(false);
 
   const fetchProfiles = async (searchTerm: string) => {
@@ -17,7 +27,7 @@ export default function OwnConnections() {
         body: JSON.stringify({ search_query: searchTerm }),
       });
       const data = await response.json();
-      return data as Profile[];
+      return data as EnrichedProfile[];
     } catch (error) {
       console.error("Error fetching connections:", error);
     }
@@ -66,7 +76,7 @@ export default function OwnConnections() {
           <div className="w-4/5 pl-4">
             <h3 className="font-bold text-2xl mb-3">{profile.name}</h3>
             <h4 className="font-bold text-2xl mb-3">{profile.email}</h4>
-            <p className="text-gray-600">{profile.about_me}</p>
+            <p className="text-gray-600">{profile.summary || " "}</p>
           </div>
         </div>
       ))}
