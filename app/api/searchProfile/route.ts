@@ -14,8 +14,8 @@ export async function POST(request: Request) {
 
     const { data, error } = await supabase.rpc("search_profiles", {
       query_embedding: JSON.stringify(queryEmbedding.data[0].embedding),
-      match_threshold: -0.5,
-      match_count: 10,
+      match_threshold: 0.5,
+      match_count: 4,
     });
     if (error) {
       return NextResponse.json({ error }, { status: 500 });
