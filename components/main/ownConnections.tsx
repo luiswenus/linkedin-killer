@@ -5,22 +5,15 @@ interface Profile {
   name: string;
   about_me: string;
 }
+interface OwnConnectionsProps {
+  fetchConnections: () => void;
+  profiles: Profile[];
+}
 
-export default function OwnConnections() {
+export default function OwnConnections({ fetchConnections, profiles }: OwnConnectionsProps) {
   const [searchTerm, setSearchTerm] = useState('');
-  const [profiles, setProfiles] = useState<Profile[]>([]);
 
   useEffect(() => {
-    const fetchConnections = async () => {
-      try {
-        const response = await fetch(`/api/getProfile${searchTerm ? `?name=${searchTerm}` : ''}`);
-        const data = await response.json();
-        setProfiles(data.profiles || []);
-      } catch (error) {
-        console.error('Error fetching connections:', error);
-      }
-    };
-
     fetchConnections();
   }, [searchTerm]);
 

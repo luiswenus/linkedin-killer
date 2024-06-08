@@ -1,16 +1,18 @@
 import DeployButton from "@/components/DeployButton";
 import AuthButton from "@/components/AuthButton";
-import AddPerson from "@/components/main/addPerson";
-import OwnConnections from "@/components/main/ownConnections";
-import OtherConnections from "@/components/main/otherConnections";
+import Connections from "@/components/connections";
 import { createClient } from "@/utils/supabase/server";
 import FetchDataSteps from "@/components/tutorial/FetchDataSteps";
 import Header from "@/components/Header";
 import { redirect } from "next/navigation";
+import { useState } from "react";
 
 
 
 export default async function Dashboard() {
+
+
+
   const supabase = createClient();
 
   const {
@@ -33,9 +35,7 @@ export default async function Dashboard() {
 
       <div className="animate-in flex-1 flex flex-col gap-20 opacity-0 w-full max-w-4xl px-3">
         <main className="flex-1 flex flex-col gap-6">
-          <AddPerson />
-          <OwnConnections />
-          <OtherConnections />
+          <Connections />
         </main>
       </div>
 
