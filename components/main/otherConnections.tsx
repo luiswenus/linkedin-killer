@@ -4,6 +4,7 @@ interface Connection {
   notes: string[];
   about_me: string;
   summary?: string;
+  mutual_connections: string[];
 }
 
 export default function OtherConnections() {
@@ -47,10 +48,23 @@ export default function OtherConnections() {
               {connections[email].summary || "No description available."}
             </p>
             <br></br>
-            <span className="text-gray-600">Connection: </span>
-            <a href={`/connections/${email}`} className="underline">
-              {email}
-            </a>
+
+            <div className="mt-2">
+              <span className="text-gray-600">Mutual Connections: </span>
+              <ul className="list-disc list-inside">
+                {connections[email].mutual_connections.map((mutualEmail, index) => (
+                  <li key={index} className="text-gray-600">
+                    {mutualEmail === "Yourself" ? (
+                      mutualEmail
+                    ) : (
+                      <a href={`mailto:${mutualEmail}`} className="underline">
+                        {mutualEmail}
+                      </a>
+                    )}
+                  </li>
+                ))}
+              </ul>
+            </div>
           </div>
         ))}
       </div>

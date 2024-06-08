@@ -26,19 +26,15 @@ export async function GET(request: Request) {
       return NextResponse.json({ error: firstDegreeError.message }, { status: 500 });
     }
 
-    console.log(firstDegreeConnections.map(conn => conn.other_profile_email));
     // Fetch second degree connections
     const { data: secondDegreeConnections, error: secondDegreeError } = await supabase
       .from("profile_connections")
       .select("other_profile_email, note")
       .in("other_profile_email", firstDegreeConnections.map(conn => conn.other_profile_email));
 
-  
-
     if (secondDegreeError) {
       return NextResponse.json({ error: secondDegreeError.message }, { status: 500 });
     }
-    console.log(secondDegreeConnections);
 
     // Fetch profiles that are within second degree connections
     const { data: profiles, error: profilesError } = await supabase
@@ -50,15 +46,16 @@ export async function GET(request: Request) {
       throw profilesError;
     }
 
-    // Group notes and about_me by email
+    // Group notes, about_me, and mutual connections by email
     const groupedData: {
-      [key: string]: { notes: string[]; about_me: string; summary?: string };
+      [key: string]: { notes: string[]; about_me: string; summary?: string; mutual_connections: string[] };
     } = {};
     secondDegreeConnections.forEach((connection) => {
       if (!groupedData[connection.other_profile_email]) {
         groupedData[connection.other_profile_email] = {
           notes: [],
           about_me: "",
+          mutual_connections: [],
         };
       }
       groupedData[connection.other_profile_email].notes.push(connection.note);
@@ -66,10 +63,30 @@ export async function GET(request: Request) {
 
     profiles.forEach((profile) => {
       if (!groupedData[profile.email]) {
-        groupedData[profile.email] = { notes: [], about_me: "" };
+        groupedData[profile.email] = { notes: [], about_me: "", mutual_connections: [] };
       }
       groupedData[profile.email].about_me = profile.about_me ?? "";
     });
+
+    // Add mutual connections to grouped data
+    for (const connection of firstDegreeConnections) {
+      const { data: mutualConnections, error: mutualConnectionsError } = await supabase
+        .from("profile_connections")
+        .select("profile_email")
+        .eq("other_profile_email", connection.other_profile_email);
+
+      if (mutualConnectionsError) {
+        return NextResponse.json({ error: mutualConnectionsError.message }, { status: 500 });
+      }
+
+      mutualConnections.forEach((mutualConnection) => {
+        if (groupedData[connection.other_profile_email]) {
+          groupedData[connection.other_profile_email].mutual_connections.push(
+            mutualConnection.profile_email === user.email ? "Yourself" : mutualConnection.profile_email
+          );
+        }
+      });
+    }
 
     // Generate summaries using OpenAI SDK
     for (const email in groupedData) {
@@ -92,4 +109,3 @@ export async function GET(request: Request) {
     return NextResponse.json({ error }, { status: 500 });
   }
 }
-
