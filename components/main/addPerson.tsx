@@ -6,7 +6,7 @@ interface AddPersonProps {
 }
 
 export default function AddPerson({ fetchConnections }: AddPersonProps){
-  const [name, setName] = useState('');
+  const [email, setEmail] = useState('');
   const [about, setAbout] = useState('');
   const [successMessage, setSuccessMessage] = useState('');
   const [isSuccess, setIsSuccess] = useState(false);
@@ -26,7 +26,7 @@ export default function AddPerson({ fetchConnections }: AddPersonProps){
       setIsSuccess(true);
       setSuccessMessage('User added successfully');
       fetchConnections();
-      setName(''); // Clear the name input
+      setEmail(''); // Clear the name input
       setAbout(''); // Clear the about input
     } else {
       setIsSuccess(false);
@@ -39,16 +39,16 @@ export default function AddPerson({ fetchConnections }: AddPersonProps){
       <h2 className="font-bold text-4xl mb-4 ">Add connection</h2>
       <form className="flex flex-col gap-4" onSubmit={handleSubmit}>
         <label htmlFor="name" className="text-md font-medium">
-          Name
+          Email
         </label>
         <input
-          type="text"
-          id="name"
-          name="name"
+          type="email"
+          id="email"
+          name="email"
           className="p-2 border shadow border-gray-300 rounded-md outline-none"
           placeholder="Name of person"
-          value={name}
-          onChange={(e) => setName(e.target.value)}
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
         />
 
         <label htmlFor="about" className="text-md font-medium">
