@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import AddPerson from "@/components/main/addPerson";
-import OtherConnections from "@/components/main/otherConnections";
+import ActualOwnConnections from "@/components/main/actualOwnConnections";
 import OwnConnections from "@/components/main/ownConnections";
 
 export default function Connections() {
@@ -23,7 +23,7 @@ export default function Connections() {
     <>
       <AddPerson />
       <OwnConnections />
-      <ActualOwnConnections />
+      <ActualOwnConnections fetchConnections={fetchConnections} profiles={profiles} />
       {/* <OtherConnections /> */}
     </>
   );

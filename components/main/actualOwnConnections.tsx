@@ -20,16 +20,7 @@ export default function ActualOwnConnections({ fetchConnections, profiles }: Own
   return (
     <>
       <h2 className="font-bold text-4xl mb-4 mt-32">Own connections</h2>
-      <div className="flex flex-col border border-gray-300 rounded-xl shadow overflow-hidden">
-        <input
-          type="text"
-          className="p-2 flex-grow outline-none"
-          placeholder="Search connections..."
-          value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value)}
-        />
-        <button className="bg-gray-700 text-white p-2" onClick={() => setSearchTerm(searchTerm)}>Search</button>
-      </div>
+
       {profiles.map((profile, index) => (
         <div key={index} className="flex items-center border border-gray-300 rounded-3xl p-4 shadow">
           <img
