@@ -12,33 +12,33 @@ export type Database = {
       profile_connections: {
         Row: {
           note: string
-          other_profile_name: string
-          profile_name: string
+          other_profile_email: string
+          profile_email: string
         }
         Insert: {
           note: string
-          other_profile_name: string
-          profile_name: string
+          other_profile_email: string
+          profile_email: string
         }
         Update: {
           note?: string
-          other_profile_name?: string
-          profile_name?: string
+          other_profile_email?: string
+          profile_email?: string
         }
         Relationships: [
           {
-            foreignKeyName: "profile_connections_other_profile_name_fkey"
-            columns: ["other_profile_name"]
+            foreignKeyName: "profile_connections_other_profile_email_fkey"
+            columns: ["other_profile_email"]
             isOneToOne: false
             referencedRelation: "profiles"
-            referencedColumns: ["name"]
+            referencedColumns: ["email"]
           },
           {
-            foreignKeyName: "profile_connections_profile_name_fkey"
-            columns: ["profile_name"]
+            foreignKeyName: "profile_connections_profile_email_fkey"
+            columns: ["profile_email"]
             isOneToOne: false
             referencedRelation: "profiles"
-            referencedColumns: ["name"]
+            referencedColumns: ["email"]
           },
         ]
       }
@@ -46,25 +46,36 @@ export type Database = {
         Row: {
           about_me: string | null
           created_at: string
+          email: string
           embedding: string | null
-          id: string
           name: string
+          user_id: string
         }
         Insert: {
           about_me?: string | null
           created_at?: string
+          email: string
           embedding?: string | null
-          id?: string
           name: string
+          user_id: string
         }
         Update: {
           about_me?: string | null
           created_at?: string
+          email?: string
           embedding?: string | null
-          id?: string
           name?: string
+          user_id?: string
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "profiles_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: true
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+        ]
       }
     }
     Views: {
