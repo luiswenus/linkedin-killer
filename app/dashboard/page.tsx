@@ -1,8 +1,5 @@
-import DeployButton from "@/components/DeployButton";
 import AuthButton from "@/components/AuthButton";
 import { createClient } from "@/utils/supabase/server";
-import FetchDataSteps from "@/components/tutorial/FetchDataSteps";
-import Header from "@/components/Header";
 import { redirect } from "next/navigation";
 
 export default async function ProtectedPage() {
@@ -30,7 +27,9 @@ export default async function ProtectedPage() {
         <main className="flex-1 flex flex-col gap-6">
           <h2 className="font-bold text-4xl mb-4 ">Add connection</h2>
           <form className="flex flex-col gap-4">
-            <label htmlFor="name" className="text-md font-medium">Name</label>
+            <label htmlFor="name" className="text-md font-medium">
+              Name
+            </label>
             <input
               type="text"
               id="name"
@@ -39,7 +38,9 @@ export default async function ProtectedPage() {
               placeholder="Name of person"
             />
 
-            <label htmlFor="about" className="text-md font-medium">About</label>
+            <label htmlFor="about" className="text-md font-medium">
+              About
+            </label>
             <textarea
               id="about"
               name="about"
@@ -47,7 +48,10 @@ export default async function ProtectedPage() {
               placeholder="Give a natural language description of the person"
             />
 
-            <button type="submit" className="bg-gray-700 text-white p-2 rounded-md mt-4">
+            <button
+              type="submit"
+              className="bg-gray-700 text-white p-2 rounded-md mt-4"
+            >
               Submit
             </button>
           </form>
@@ -151,4 +155,3 @@ export default async function ProtectedPage() {
     </div>
   );
 }
-
