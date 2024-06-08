@@ -1,11 +1,7 @@
 "use client";
 import { useState } from "react";
 
-interface AddPersonProps {
-  fetchConnections: () => void;
-}
-
-export default function AddPerson({ fetchConnections }: AddPersonProps) {
+export default function AddPerson() {
   const [email, setEmail] = useState("");
   const [about, setAbout] = useState("");
   const [successMessage, setSuccessMessage] = useState("");
@@ -28,7 +24,6 @@ export default function AddPerson({ fetchConnections }: AddPersonProps) {
     if (response.ok) {
       setIsSuccess(true);
       setSuccessMessage("User added successfully");
-      fetchConnections();
       setEmail(""); // Clear the name input
       setAbout(""); // Clear the about input
     } else {
