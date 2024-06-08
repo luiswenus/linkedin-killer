@@ -47,24 +47,24 @@ export type Database = {
           about_me: string | null
           created_at: string
           email: string
-          embedding: string | null
-          name: string
+          embedding: string
+          name: string | null
           user_id: string | null
         }
         Insert: {
           about_me?: string | null
           created_at?: string
           email: string
-          embedding?: string | null
-          name: string
+          embedding: string
+          name?: string | null
           user_id?: string | null
         }
         Update: {
           about_me?: string | null
           created_at?: string
           email?: string
-          embedding?: string | null
-          name?: string
+          embedding?: string
+          name?: string | null
           user_id?: string | null
         }
         Relationships: [
