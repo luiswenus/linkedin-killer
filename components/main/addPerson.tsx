@@ -1,36 +1,39 @@
 "use client";
-import { useState } from 'react';
+import { useState } from "react";
 
 interface AddPersonProps {
   fetchConnections: () => void;
 }
 
-export default function AddPerson({ fetchConnections }: AddPersonProps){
-  const [email, setEmail] = useState('');
-  const [about, setAbout] = useState('');
-  const [successMessage, setSuccessMessage] = useState('');
+export default function AddPerson({ fetchConnections }: AddPersonProps) {
+  const [email, setEmail] = useState("");
+  const [about, setAbout] = useState("");
+  const [successMessage, setSuccessMessage] = useState("");
   const [isSuccess, setIsSuccess] = useState(false);
 
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
 
-    const response = await fetch('/api/createProfileConnection', {
-      method: 'POST',
+    const response = await fetch("/api/addConnection", {
+      method: "POST",
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
       },
-      body: JSON.stringify({ name, note: about }),
+      body: JSON.stringify({
+        email,
+        note: about,
+      }),
     });
 
     if (response.ok) {
       setIsSuccess(true);
-      setSuccessMessage('User added successfully');
+      setSuccessMessage("User added successfully");
       fetchConnections();
-      setEmail(''); // Clear the name input
-      setAbout(''); // Clear the about input
+      setEmail(""); // Clear the name input
+      setAbout(""); // Clear the about input
     } else {
       setIsSuccess(false);
-      setSuccessMessage('Failed to add user');
+      setSuccessMessage("Failed to add user");
     }
   };
 
@@ -71,7 +74,13 @@ export default function AddPerson({ fetchConnections }: AddPersonProps){
         </button>
       </form>
       {successMessage && (
-        <div className={`mt-4 p-2 rounded-md ${isSuccess ? 'bg-green-200 text-green-800' : 'bg-red-200 text-red-800'}`}>
+        <div
+          className={`mt-4 p-2 rounded-md ${
+            isSuccess
+              ? "bg-green-200 text-green-800"
+              : "bg-red-200 text-red-800"
+          }`}
+        >
           {successMessage}
         </div>
       )}

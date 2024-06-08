@@ -1,42 +1,79 @@
-import { updateEmbedding } from "@/utils/openai/service"
-import { createClient } from '@/utils/supabase/server';
-import { NextResponse } from 'next/server';
+import { computeEmbedding } from "@/utils/openai/service";
+import { createClient } from "@/utils/supabase/server";
+import { NextResponse } from "next/server";
 
 export async function POST(request: Request) {
-    const url = new URL(request.url);
-    const queryParams = Object.fromEntries(url.searchParams);
-    const supabase = createClient();
+  const body = await request.json();
+  const supabase = createClient();
 
-    // TODO: search for profile_name: get all information about that person and combine the strings
+  // TODO: search for profile_name: get all information about that person and combine the strings
 
+  const user = await supabase.auth.getUser();
 
-    try {
-        const profile_connection = {
-            profile_name: queryParams.profile_name,
-            other_profile_name: queryParams.other_profile_name,
-            note: queryParams.note,
-          }
+  if (!user?.data?.user?.email) {
+    return NextResponse.json({ message: "user not found" }, { status: 404 });
+  }
 
-        let { error } = await supabase.from("profile_connections").insert(profile_connection);
-        const new_embedding = await updateEmbedding(queryParams.other_profile_name)
-        await supabase.from("profiles").update({embedding: new_embedding}).eq("name", queryParams.other_profile_name)
-        if (error?.code === "23503") {
-            console.log("error", "23503")
-            const profile = {
-                name: queryParams.other_profile_name,
-                about_me: "",
-            }
+  try {
+    const profileConnection = {
+      profile_email: user.data.user.email,
+      other_profile_email: body.email,
+      note: body.note,
+    };
 
-            let error_insert_profile = (await supabase.from("profiles").insert(profile));
-            console.log("error_insert_profile", error_insert_profile)
-            let error_insert_profile_connection = await supabase.from("profile_connections").insert(profile_connection);
-            const new_embedding = await updateEmbedding(queryParams.other_profile_name)
-            await supabase.from("profiles").update({embedding: new_embedding}).eq("name", queryParams.other_profile_name)
-            console.log("error_insert_profile_connection", error_insert_profile_connection)
-        }
-        
-        return NextResponse.json({ message: "added connection successfully" }, { status: 200 });
-      } catch(error) {
-        return NextResponse.json({ error }, { status: 500 });
-      }
+    const { data: supabaseProfileConnections = [] } = await supabase
+      .from("profile_connections")
+      .select()
+      .eq("other_profile_email", profileConnection.other_profile_email);
+
+    const { data: supabaseOtherProfile } = await supabase
+      .from("profiles")
+      .select()
+      .eq("email", profileConnection.other_profile_email)
+      .maybeSingle();
+
+    const otherProfile = {
+      ...supabaseOtherProfile,
+      name: supabaseOtherProfile?.name ?? undefined,
+      about_me: supabaseOtherProfile?.about_me ?? "",
+    };
+
+    const profileConnections = supabaseProfileConnections
+      ? [...supabaseProfileConnections, profileConnection]
+      : [profileConnection];
+
+    const embedding = await computeEmbedding(otherProfile, profileConnections);
+
+    if (!!supabaseOtherProfile) {
+      console.log(
+        "AAA updating profile",
+        supabaseOtherProfile.email,
+        embedding
+      );
+      await supabase
+        .from("profiles")
+        .update({ embedding })
+        .eq("email", supabaseOtherProfile.email);
+    } else {
+      console.log(
+        "AAA inserting profile",
+        profileConnection.other_profile_email
+      );
+      await supabase.from("profiles").insert({
+        email: profileConnection.other_profile_email,
+        name: profileConnection.other_profile_email,
+        about_me: "",
+        embedding,
+      });
+    }
+
+    await supabase.from("profile_connections").upsert(profileConnection);
+
+    return NextResponse.json(
+      { message: "added connection successfully" },
+      { status: 200 }
+    );
+  } catch (error) {
+    return NextResponse.json({ error }, { status: 500 });
+  }
 }
