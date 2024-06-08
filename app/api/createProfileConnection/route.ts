@@ -7,9 +7,14 @@ export async function POST(request: Request) {
   const supabase = createClient();
   
   try {
+    const { data: { user } } = await supabase.auth.getUser();
+    
+    if (!user?.email) {
+      return NextResponse.json({ error: "User not found" }, { status: 401 });
+    }
     const { error } = await supabase.from("profile_connections").insert(
       {
-        profile_email: "luis@wenus.com",
+        profile_email: user.email,
         other_profile_email: email,
         note: note,
       }
