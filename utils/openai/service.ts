@@ -25,7 +25,7 @@ ${connection.note}
 
   const result = await openai.embeddings.create({
     input: input,
-    model: "text-embedding-3-small",
+    model: "text-embedding-ada-002",
   });
 
   const stringifiedEmbedding = JSON.stringify(result.data[0].embedding);
