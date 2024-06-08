@@ -23,7 +23,8 @@ export default function Connections() {
     <>
       <AddPerson />
       <OwnConnections />
-      <OtherConnections />
+      <ActualOwnConnections />
+      {/* <OtherConnections /> */}
     </>
   );
 }
